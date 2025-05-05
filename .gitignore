@@ -29,5 +29,6 @@ build/
 ios/
 linux/
 macos/
+android/
 windows/
 web/
