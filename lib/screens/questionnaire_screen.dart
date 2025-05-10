@@ -54,52 +54,113 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   @override
   Widget build(BuildContext context) {
     Question currentQuestion = widget.questions[_currentQuestionIndex];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Опросник'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              currentQuestion.text,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            if (currentQuestion.gifUrl != null)
-              Image.network(
-                currentQuestion.gifUrl!,
-                height: 150,
-                width: 150,
-                fit: BoxFit.cover,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFE3F2FD), Colors.white],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              LinearProgressIndicator(
+                value: (_currentQuestionIndex + 1) / widget.questions.length,
+                minHeight: 8,
+                backgroundColor: Colors.grey[200],
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF4CAF50)),
               ),
-            const SizedBox(height: 20),
-            ...currentQuestion.answers.map((answer) =>
-                RadioListTile<String>(
-                  title: Text(answer),
+              SizedBox(height: 12),
+              Text(
+                'Вопрос ${_currentQuestionIndex + 1} из ${widget.questions.length}',
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+              SizedBox(height: 20),
+              Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        currentQuestion.text,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF1976D2),
+                        ),
+                      ),
+                      if (currentQuestion.gifUrl != null) ...[
+                        SizedBox(height: 16),
+                        Center(
+                          child: Image.network(
+                            currentQuestion.gifUrl!,
+                            height: 150,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              ...currentQuestion.answers.map((answer) => Card(
+                margin: EdgeInsets.only(bottom: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                color: _selectedAnswer == answer 
+                    ? Color(0xFF2196F3).withOpacity(0.1)
+                    : Colors.white,
+                child: RadioListTile<String>(
+                  title: Text(
+                    answer,
+                    style: TextStyle(
+                      color: _selectedAnswer == answer
+                          ? Color(0xFF1976D2)
+                          : Colors.black87,
+                    ),
+                  ),
                   value: answer,
                   groupValue: _selectedAnswer,
                   onChanged: (String? value) {
                     setState(() {
                       _selectedAnswer = value;
-                      _answers[_currentQuestionIndex] = value; // Store the answer here
+                      _answers[_currentQuestionIndex] = value;
                     });
                   },
-                )
-            ).toList(),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _nextQuestion(context),
-              child: Text(
+                  activeColor: Color(0xFF2196F3),
+                ),
+              )).toList(),
+              Spacer(),
+              ElevatedButton(
+                onPressed: () => _nextQuestion(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF2196F3),
+                  minimumSize: Size(double.infinity, 50),
+                ),
+                child: Text(
                   _currentQuestionIndex < widget.questions.length - 1
                       ? 'Следующий вопрос'
-                      : 'Завершить'
+                      : 'Завершить',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

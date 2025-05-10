@@ -14,10 +14,42 @@ class DocHelpApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'DocHelp',
+      home: MyHomePage(title: 'DocHelp Опросник'),
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF2196F3),       // Основной синий
+          secondary: Color(0xFF4CAF50),      // Зелёный акцент
+        ),
+        scaffoldBackgroundColor: Color(0xFFE3F2FD), // Светло-голубой фон
+        cardTheme: CardTheme(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          margin: EdgeInsets.all(8),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: Color(0xFF2196F3),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: EdgeInsets.symmetric(vertical: 16),
+          ),
+        ),
+        appBarTheme: const AppBarTheme(
+          color: Color(0xFF1976D2), // Более тёмный синий для AppBar
+          elevation: 0,
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
       ),
-      home: const MyHomePage(title: 'DocHelp Опросник'),
     );
   }
 }
@@ -80,13 +112,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   MaterialPageRoute(
                     builder: (context) => QuestionnaireScreen(questions: questions),
                   ),
-                );
+                ); 
               },
+              style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 24, 
+                      vertical: 16,
+                    ),
+                  ),
               child: const Text('Начать опрос'),
+              
             ),
-            const SizedBox(height: 20), // Add some spacing
+            const SizedBox(height: 20, width: 150),
+
             ElevatedButton(
               onPressed: () {
+                
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -94,7 +135,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 );
               },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 24, // Стандартный padding + 10 пикселей
+                  vertical: 16,
+                ),
+              ),
               child: const Text('История тестов'),
+              
             ),
           ],
         ),
