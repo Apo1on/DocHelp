@@ -42,9 +42,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                 textCapitalization: TextCapitalization.words,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(
-                    RegExp(r'[а-яА-ЯёЁa-zA-Z\s-]'), // Разрешаем русские/английские буквы, пробелы и дефисы
+                    RegExp(r'[а-яА-ЯёЁa-zA-Z\s-]'), // русские/английские буквы, пробелы и дефисы
                   ),
-                  LengthLimitingTextInputFormatter(50), // Ограничение длины
+                  LengthLimitingTextInputFormatter(50), // макс длина 50
                 ],
                 decoration: const InputDecoration(
                   labelText: 'Ваше имя',

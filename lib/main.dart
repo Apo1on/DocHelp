@@ -68,27 +68,27 @@ class _MyHomePageState extends State<MyHomePage> {
     Question(
       text: 'Вопрос 1: Оцените состояние струи при мочеиспускании?',
       answers: ['1', '2', '3', '4', '5'],
-      gifUrl: '-',
+      gifAssetPath: 'assets/gif/PlaceHolder1.gif',
     ),
     Question(
       text: 'Вопрос 2: Сколько мочеиспусканий у вас днём?',
       answers: ['0', '1', '2','3','4','5', '6+'],
-      gifUrl: '-',
+      gifAssetPath: 'assets/gif/PlaceHolder2.gif',
     ),
     Question(
       text: 'Вопрос 3: Сколько мочеиспусканий у вас ночью?',
       answers: ['0', '1', '2','3','4','5', '6+'],
-      gifUrl: '-',
+      gifAssetPath: 'assets/gif/PlaceHolder3.gif',
     ),
     Question(
       text: 'Вопрос 4: Оцените ваше качество жизни на фоне имеющихся проблем?',
-      answers: ['прекрасно(0)', 'хорошо(1)', 'средне(2)', 'некоторый дискофорт(3)', 'плохо(4)', 'ужасно(5)'],
-      gifUrl: '-', 
+      answers: ['Счастлив(0)', 'Прекрасно(1)', 'Хорошо(2)', 'Нормально(3)', 'Не очень(4)', 'Плохо(5)', 'Ужасно(6)'],
+      gifAssetPath: 'assets/gif/PlaceHolder4.gif', 
     ),
     Question(
       text: 'Вопрос 5: Как хорошо вам понятны вопросы в анкете?',
       answers: ['Все понял', 'не очень понял', 'не понял'],
-      gifUrl: '-',
+      gifAssetPath: '-',
     ),
   ];
 

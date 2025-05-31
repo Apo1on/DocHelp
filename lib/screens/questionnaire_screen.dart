@@ -13,26 +13,24 @@ class QuestionnaireScreen extends StatefulWidget {
 
 class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   int _currentQuestionIndex = 0;
-  List<String?> _answers = []; // List to store user's answers
+  List<String?> _answers = [];
   String? _selectedAnswer;
 
   @override
   void initState() {
     super.initState();
-    // Initialize the answers list with null values
     _answers = List<String?>.filled(widget.questions.length, null);
   }
 
   void _nextQuestion(BuildContext context) {
     if (_selectedAnswer == null) {
-      // Show a message if no answer is selected
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Пожалуйста, выберите ответ.'),
-          duration: Duration(milliseconds: 500), // Adjust the duration as needed
+          duration: Duration(milliseconds: 500), 
         ),
       );
-      return; // Do not proceed if no answer is selected
+      return; 
     }
     setState(() {
       _selectedAnswer = null;
@@ -40,7 +38,6 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       if (_currentQuestionIndex < widget.questions.length - 1) {
         _currentQuestionIndex++;
       } else {
-        // Navigate to UserDataScreen when all questions are answered
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -68,98 +65,101 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              LinearProgressIndicator(
-                value: (_currentQuestionIndex + 1) / widget.questions.length,
-                minHeight: 8,
-                backgroundColor: Colors.grey[200],
-                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF4CAF50)),
-              ),
-              SizedBox(height: 12),
-              Text(
-                'Вопрос ${_currentQuestionIndex + 1} из ${widget.questions.length}',
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-              SizedBox(height: 20),
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LinearProgressIndicator(
+                  value: (_currentQuestionIndex + 1) / widget.questions.length,
+                  minHeight: 8,
+                  backgroundColor: Colors.grey[200],
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF4CAF50)),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        currentQuestion.text,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF1976D2),
-                        ),
-                      ),
-                      if (currentQuestion.gifUrl != null) ...[
-                        SizedBox(height: 16),
-                        Center(
-                          child: Image.network(
-                            currentQuestion.gifUrl!,
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
+                SizedBox(height: 12),
+                Text(
+                  'Вопрос ${_currentQuestionIndex + 1} из ${widget.questions.length}',
+                  style: TextStyle(color: Colors.grey[600]),
+                ),
+                SizedBox(height: 20),
+                Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          currentQuestion.text,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1976D2),
                           ),
                         ),
+                        if (currentQuestion.gifAssetPath != null) ...[
+                          SizedBox(height: 16),
+                          Center(
+                            child: Image.asset(
+                            currentQuestion.gifAssetPath!,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(); 
+                            },
+                          ),
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              ...currentQuestion.answers.map((answer) => Card(
-                margin: EdgeInsets.only(bottom: 8),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                color: _selectedAnswer == answer 
-                    ? Color(0xFF2196F3).withOpacity(0.1)
-                    : Colors.white,
-                child: RadioListTile<String>(
-                  title: Text(
-                    answer,
-                    style: TextStyle(
-                      color: _selectedAnswer == answer
-                          ? Color(0xFF1976D2)
-                          : Colors.black87,
                     ),
                   ),
-                  value: answer,
-                  groupValue: _selectedAnswer,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _selectedAnswer = value;
-                      _answers[_currentQuestionIndex] = value;
-                    });
-                  },
-                  activeColor: Color(0xFF2196F3),
                 ),
-              )).toList(),
-              Spacer(),
-              ElevatedButton(
-                onPressed: () => _nextQuestion(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF2196F3),
-                  minimumSize: Size(double.infinity, 50),
+                SizedBox(height: 20),
+                ...currentQuestion.answers.map((answer) => Card(
+                  margin: EdgeInsets.only(bottom: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  color: _selectedAnswer == answer 
+                      ? Color(0xFF2196F3).withOpacity(0.1)
+                      : Colors.white,
+                  child: RadioListTile<String>(
+                    title: Text(
+                      answer,
+                      style: TextStyle(
+                        color: _selectedAnswer == answer
+                            ? Color(0xFF1976D2)
+                            : Colors.black87,
+                      ),
+                    ),
+                    value: answer,
+                    groupValue: _selectedAnswer,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _selectedAnswer = value;
+                        _answers[_currentQuestionIndex] = value;
+                      });
+                    },
+                    activeColor: Color(0xFF2196F3),
+                  ),
+                )).toList(),
+                SizedBox(height: 20), 
+                ElevatedButton(
+                  onPressed: () => _nextQuestion(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF2196F3),
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  child: Text(
+                    _currentQuestionIndex < widget.questions.length - 1
+                        ? 'Следующий вопрос'
+                        : 'Завершить',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
-                child: Text(
-                  _currentQuestionIndex < widget.questions.length - 1
-                      ? 'Следующий вопрос'
-                      : 'Завершить',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

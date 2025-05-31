@@ -7,8 +7,27 @@ class ResultsScreen extends StatelessWidget {
 
   const ResultsScreen({Key? key, required this.userName, required this.answers}) : super(key: key);
 
+  String _calculateProblemSeverity() {
+    // Суммируем числовые значения первых 3 ответов
+    int sum = 0;
+    for (int i = 0; i < 3 && i < answers.length; i++) {
+      try {
+        sum += int.tryParse(answers[i] ?? '0') ?? 0;
+      } catch (e) {
+        // В случае ошибки просто игнорируем этот ответ
+      }
+    }
+
+    // Определяем уровень проблемы
+    if (sum < 5) return 'лёгкая (менее 5)';
+    if (sum <= 10) return 'средняя (от 5 до 10)';
+    return 'тяжёлая (10+)';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final problemSeverity = _calculateProblemSeverity();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Результаты опроса'),
@@ -47,6 +66,34 @@ class ResultsScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[600],
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        'Результат оценки проблемы:',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: _getSeverityColor(problemSeverity).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: _getSeverityColor(problemSeverity),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          problemSeverity,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: _getSeverityColor(problemSeverity),
+                          ),
                         ),
                       ),
                     ],
@@ -130,5 +177,11 @@ class ResultsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color _getSeverityColor(String severity) {
+    if (severity.contains('лёгкая')) return Colors.green;
+    if (severity.contains('средняя')) return Colors.orange;
+    return Colors.red;
   }
 }
