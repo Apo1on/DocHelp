@@ -137,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 24, // Стандартный padding + 10 пикселей
+                  horizontal: 24, 
                   vertical: 16,
                 ),
               ),

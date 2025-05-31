@@ -12,16 +12,21 @@ class ResultsScreen extends StatelessWidget {
     int sum = 0;
     for (int i = 0; i < 3 && i < answers.length; i++) {
       try {
+        
         sum += int.tryParse(answers[i] ?? '0') ?? 0;
+        if( answers[i] == '6+')
+        {
+          sum += 6;
+        }
       } catch (e) {
         // В случае ошибки просто игнорируем этот ответ
       }
     }
 
     // Определяем уровень проблемы
-    if (sum < 5) return 'лёгкая (менее 5)';
-    if (sum <= 10) return 'средняя (от 5 до 10)';
-    return 'тяжёлая (10+)';
+    if (sum < 7) return '${sum} пункт(ов), лёгкая степень (менее 6)';
+    if (sum <= 13) return '${sum} пункт(ов), умеренная (от 7 до 13)';
+    return '${sum} пункт(ов), тяжёлая (14+)';
   }
 
   @override

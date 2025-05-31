@@ -63,8 +63,8 @@ class _UserDataScreenState extends State<UserDataScreen> {
                 onSaved: (value) {
                   _userName = value!.trim();
                 },
-                autofocus: true, // Автофокус на поле
-                textInputAction: TextInputAction.done, // Кнопка "Готово" на клавиатуре
+                autofocus: true, 
+                textInputAction: TextInputAction.done,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
